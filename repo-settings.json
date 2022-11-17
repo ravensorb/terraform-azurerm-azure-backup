@@ -1,0 +1,6 @@
+{
+    "name": "terraform-azurerm-azure-ackup",
+    "description": "Terraform module for setting up Azure Backup",
+    "version": "v1.0.0",
+    "message": "Initial Version"
+}
