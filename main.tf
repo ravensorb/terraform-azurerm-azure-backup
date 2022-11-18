@@ -7,10 +7,10 @@ locals {
   resource_prefix     = var.resource_prefix == "" ? local.resource_group_name : var.resource_prefix
   location            = element(coalescelist(data.azurerm_resource_group.rgrp.*.location, azurerm_resource_group.rg.*.location, [""]), 0)
 
-  timeout_create  = "45m"
-  timeout_update  = "15m"
-  timeout_delete  = "15m"
-  timeout_read    = "15m"
+  timeout_create  = "180m"
+  timeout_update  = "60m"
+  timeout_delete  = "60m"
+  timeout_read    = "60m"
 }
 
 #---------------------------------------------------------
@@ -70,7 +70,7 @@ resource "azurerm_backup_policy_vm" "policy" {
 
     content {
       count = var.backup_polcy_retention_weekly_count
-      weekdays = [ "Saturday" ]
+      weekdays = var.backup_policy_retention_weekly_weekdays != null ? var.backup_policy_retention_weekly_weekdays : [ "Saturday" ]
     }
   }
 
@@ -79,7 +79,7 @@ resource "azurerm_backup_policy_vm" "policy" {
 
     content {
       count = var.backup_polcy_retention_monthly_count
-      weekdays  = [ "Saturday "]
+      weekdays  = var.backup_policy_retention_monthly_weekdays != null ? var.backup_policy_retention_monthly_weekdays : [ "Saturday" ]
       weeks     = [ "Last" ]
     }
   }  
@@ -98,7 +98,7 @@ resource "azurerm_backup_policy_vm" "policy" {
 
 data "azurerm_virtual_machine" "vm" {
   name                = var.virtual_machine_name 
-  resource_group_name = local.resource_group_name
+  resource_group_name = var.virtual_machine_resource_group_name != "" ? var.virtual_machine_resource_group_name : local.resource_group_name
 }
 
 resource "azurerm_backup_protected_vm" "vm" {
