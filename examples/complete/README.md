@@ -57,6 +57,14 @@ module "azure-backup" {
 	# (Optional) Indicates the number of monthly backups to retain (set to blank to disable)
 	backup_polcy_retention_monthly_count = 6
 
+    # Contains the list virtual machines that will be backed up
+    backup_virtual_machines = [
+		{ 
+			name                = "vm"
+			resource_group_name = "vm-rg"
+		}
+	]
+
 	# (Optional) Indicates the resource group for the vm (defaults to same resource group as the backup vault)
   	virtual_machine_resource_group_name = "rg-vm"
 
@@ -93,8 +101,8 @@ azurerm | >= 2.59.0
 
 ## Providers
 
- | Name | Version | 
- | ------ | --------- | 
+Name | Version | 
+------ | --------- | 
 azurerm | >= 2.59.0
 
 ## Inputs
@@ -116,9 +124,8 @@ Name | Description | Type | Default
 `backup_policy_retention_weekly_weekdays` | (Optional) Indicates which days of the week the monthly backup will be taken | `set(string)` | `[ "Saturday" ]`
 `backup_polcy_retention_monthly_count` | (Optional) Indicates the number of monthly backups to retain (set to blank to disable) | `string` | `6`
 `backup_policy_retention_monthly_weekdays` | (Optional) Indicates which days of the week the monthly backup will be taken | `set(string)` | `[ "Saturday" ]`
-`virtual_machine_resource_group_name` | (Optional) Indicates the resource group for the vm (defaults to same resource group as the backup vault) | `string` | ``
-`virtual_machine_name | Indicates the name of the virtual machine to backup | `string` | ``
-`tags` | A map of tags to add to all resources | map(string) | `{}`
+`backup_virtual_machines` | (Optional) Contains the list virtual machines that will be backedup | `list(object)` | ``
+`tags` | A map of tags to add to all resources | `map(string)` | `{}`
 
 ## Outputs
 
@@ -131,7 +138,7 @@ Name | Description
 `azurerm_backup_protected_vm_id` | The id of the backup protected vm resource
 `azurerm_recovery_services_vault_id` | The id of the recover services vault
 `azurerm_recovery_services_vault_name` | The name of the recover services vault
-`azurerm_backup_protected_vm_id` | The id of the backup protected vm
+`azurerm_backup_protected_vm_ids` | The id of the backup protected vm
 
 ## Recommended naming and tagging conventions
 

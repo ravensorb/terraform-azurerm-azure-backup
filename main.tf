@@ -38,6 +38,8 @@ resource "azurerm_recovery_services_vault" "vault" {
   resource_group_name = local.resource_group_name
   sku                 = var.recovery_services_vault_sku != null ? var.recovery_services_vault_sku : "Standard"
   storage_mode_type   = var.recovery_services_vault_storage_mode != null ? var.recovery_services_vault_storage_mode : "LocallyRedundant"
+  
+  #cross_region_restore_enabled = var.recovery_servuces_vault_cross_region_restore_enabled
 }
 
 #-------------------------------------
@@ -97,16 +99,20 @@ resource "azurerm_backup_policy_vm" "policy" {
 #-------------------------------------
 
 data "azurerm_virtual_machine" "vm" {
-  name                = var.virtual_machine_name 
-  resource_group_name = var.virtual_machine_resource_group_name != "" ? var.virtual_machine_resource_group_name : local.resource_group_name
+  for_each            = var.backup_virtual_machines
+
+  name                = each.value.name
+  resource_group_name = each.value.resource_group != "" ? each.value.resource_group : local.resource_group_name
 }
 
 resource "azurerm_backup_protected_vm" "vm" {
+  for_each            = var.backup_virtual_machines  
+
   resource_group_name = local.resource_group_name
   recovery_vault_name = azurerm_recovery_services_vault.vault.name
   backup_policy_id    = azurerm_backup_policy_vm.policy.id
 
-  source_vm_id = data.azurerm_virtual_machine.vm.id
+  source_vm_id        = data.azurerm_virtual_machine.vm[each.key].id
 
   timeouts {
     create  = local.timeout_create

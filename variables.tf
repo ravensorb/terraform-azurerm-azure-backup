@@ -113,14 +113,13 @@ variable "backup_policy_retention_monthly_weekdays" {
   }
 }
 
-variable "virtual_machine_resource_group_name" {
-  description = "(Optional) Indicates the resource group for the vm (defaults to same resource group as the backup vault)"
-  default     = ""
-}
-
-variable "virtual_machine_name" {
-  description = "Indicates the name of the virtual machine to backup"
-  default     = ""
+variable "backup_virtual_machines" {
+  description = "Contains the list virtual machines that will be backed up"
+  type        = list(object({
+    name                = string 
+    resource_group_name = string
+  }))
+  default = []
 }
 
 variable "tags" {
