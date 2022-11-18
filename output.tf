@@ -19,9 +19,9 @@ output "azurerm_backup_policy_vm_id" {
   value       = element(concat(resource.azurerm_backup_policy_vm.policy.*.id, [""]), 0)
 }
 
-output "azurerm_backup_protected_vm_id" {
-  description = "The id of the backup protected vm resource"
-  value       = element(concat(resource.azurerm_backup_protected_vm.vm.*.id, [""]), 0)
+output "azurerm_backup_protected_vm_ids" {
+  description = "The ids of the backup protected vm resource"
+  value       = values(resource.azurerm_backup_protected_vm.vm).*.id
 }
 
 output "azurerm_recovery_services_vault_id" {

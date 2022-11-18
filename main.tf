@@ -7,6 +7,14 @@ locals {
   resource_prefix     = var.resource_prefix == "" ? local.resource_group_name : var.resource_prefix
   location            = element(coalescelist(data.azurerm_resource_group.rgrp.*.location, azurerm_resource_group.rg.*.location, [""]), 0)
 
+  virtual_machines = { 
+    for idx, vm in var.backup_virtual_machines : vm.name => {
+       idx : idx,
+       vm : vm,
+    }
+  }
+
+
   timeout_create  = "180m"
   timeout_update  = "60m"
   timeout_delete  = "60m"
@@ -99,20 +107,20 @@ resource "azurerm_backup_policy_vm" "policy" {
 #-------------------------------------
 
 data "azurerm_virtual_machine" "vm" {
-  for_each            = var.backup_virtual_machines
+  for_each            = local.virtual_machines
 
-  name                = each.value.name
-  resource_group_name = each.value.resource_group != "" ? each.value.resource_group : local.resource_group_name
+  name                = each.value.vm.name
+  resource_group_name = each.value.vm.resource_group_name != "" ? each.value.vm.resource_group_name : local.resource_group_name
 }
 
 resource "azurerm_backup_protected_vm" "vm" {
-  for_each            = var.backup_virtual_machines  
+  for_each            = local.virtual_machines
 
   resource_group_name = local.resource_group_name
   recovery_vault_name = azurerm_recovery_services_vault.vault.name
   backup_policy_id    = azurerm_backup_policy_vm.policy.id
 
-  source_vm_id        = data.azurerm_virtual_machine.vm[each.key].id
+  source_vm_id        = data.azurerm_virtual_machine.vm[each.value.vm.name].id
 
   timeouts {
     create  = local.timeout_create

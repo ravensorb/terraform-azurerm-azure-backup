@@ -1,6 +1,6 @@
 {
     "name": "terraform-azurerm-azure-backup",
     "description": "Terraform module for setting up Azure Backup",
-    "version": "v1.0.0",
-    "message": "Initial Version"
+    "version": "v1.0.1",
+    "message": "Changed vm backup details to a list of objects"
 }
