@@ -4,13 +4,13 @@ variable "name" {
 }
 
 variable "create_resource_group" {
-  description = "Whether to create resource group and use it for all networking resources"
+  description = "Whether to create resource group and use it for all resources"
   default     = true
 }
 
 variable "resource_group_name" {
   description = "A container that holds related resources for an Azure solution"
-  default     = "rg-filestorage"
+  default     = ""
 }
 
 variable "location" {
@@ -21,6 +21,31 @@ variable "location" {
 variable "resource_prefix" {
   description = "(Optional) Prefix to use for all resoruces created (Defaults to resource_group_name)"
   default     = ""
+}
+
+variable "create_storage_account" {
+  description = "Whether to create storage account and use it for all backups"
+  default     = true
+}
+
+variable "storage_account_resource_group_name" {
+  description = "A container that holds related resources for an Azure solution"
+  default     = ""
+}
+
+variable "storage_account_name" {
+  description = "(Optional) Indicates the name of the storage account to either use or create"
+  default     = ""
+}
+
+variable "storage_account_tier" {
+  description = "(Optional) Indicates the storage acccount tier"
+  default     = ""
+}
+
+variable "storage_account_replication_type" {
+  description = "(Optional) Indicates the storage account replication type"
+  default     = "LZR"
 }
 
 variable "recovery_services_vault_name" {
@@ -118,6 +143,17 @@ variable "backup_virtual_machines" {
   type        = list(object({
     name                = string 
     resource_group_name = string
+    os_type             = string
+  }))
+  default = []
+}
+
+variable "backup_file_shares" {
+  description = "Contains the list file shares that will be backed up"
+  type        = list(object({
+    name                  = string 
+    storage_account_name  = string
+    resource_group_name   = string
   }))
   default = []
 }
