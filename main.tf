@@ -46,7 +46,7 @@ resource "azurerm_resource_group" "rg" {
     create  = local.timeout_create
     delete  = local.timeout_delete
     read    = local.timeout_read
-    update  = local.timeout_update
+    #update  = local.timeout_update
   }
 }
 
