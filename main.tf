@@ -241,7 +241,6 @@ resource "azurerm_backup_container_storage_account" "container" {
     create  = local.timeout_create
     delete  = local.timeout_delete
     read    = local.timeout_read
-    update  = local.timeout_update
   }  
 }
 
