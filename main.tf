@@ -22,7 +22,6 @@ locals {
   }
 
   timeout_create  = "180m"
-  timeout_update  = "60m"
   timeout_delete  = "60m"
   timeout_read    = "60m"
 }
@@ -46,7 +45,6 @@ resource "azurerm_resource_group" "rg" {
     create  = local.timeout_create
     delete  = local.timeout_delete
     read    = local.timeout_read
-    update  = local.timeout_update
   }
 }
 
@@ -69,7 +67,6 @@ resource "azurerm_recovery_services_vault" "vault" {
     create  = local.timeout_create
     delete  = local.timeout_delete
     read    = local.timeout_read
-    update  = local.timeout_update
   }  
 }
 
@@ -121,7 +118,6 @@ resource "azurerm_backup_policy_vm" "policy" {
     create  = local.timeout_create
     delete  = local.timeout_delete
     read    = local.timeout_read
-    update  = local.timeout_update
   }
 }
 
@@ -168,7 +164,6 @@ resource "azurerm_backup_policy_file_share" "policy" {
     create  = local.timeout_create
     delete  = local.timeout_delete
     read    = local.timeout_read
-    update  = local.timeout_update
   }
 }
 
@@ -210,7 +205,6 @@ resource "azurerm_backup_protected_vm" "vm" {
     create  = local.timeout_create
     delete  = local.timeout_delete
     read    = local.timeout_read
-    update  = local.timeout_update
   }
 }
 
