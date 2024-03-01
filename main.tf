@@ -256,6 +256,5 @@ resource "azurerm_backup_protected_file_share" "share" {
     create  = local.timeout_create
     delete  = local.timeout_delete
     read    = local.timeout_read
-    update  = local.timeout_update
   }
 }
