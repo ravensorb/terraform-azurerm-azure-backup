@@ -24,6 +24,7 @@ locals {
   timeout_create  = "180m"
   timeout_delete  = "60m"
   timeout_read    = "60m"
+  timeout_update  = "60m"
 }
 
 #---------------------------------------------------------
