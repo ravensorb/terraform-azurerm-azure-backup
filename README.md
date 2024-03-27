@@ -1,4 +1,4 @@
-# Azure Backup Terraform module
+# Azure Backup Terraform module DIMA
 
 Take advantage of fully managed backup of virtual machines in the cloud.
 
